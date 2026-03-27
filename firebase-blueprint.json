@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores student and admin profile information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full name of the user" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "role": { "type": "string", "enum": ["student", "admin"], "description": "User role" },
+        "course": { "type": "string", "description": "Selected course (for students)" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Class": {
+      "title": "Upcoming Class",
+      "description": "Details of upcoming live classes.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Class title" },
+        "description": { "type": "string", "description": "Class description" },
+        "course": { "type": "string", "description": "Target course" },
+        "startTime": { "type": "string", "format": "date-time", "description": "Class start time" },
+        "joinUrl": { "type": "string", "format": "uri", "description": "Link to join the class" },
+        "type": { "type": "string", "enum": ["Live Session", "Recorded"], "description": "Type of session" }
+      },
+      "required": ["title", "course", "startTime"]
+    },
+    "Homework": {
+      "title": "Homework Assignment",
+      "description": "Homework allotted to students.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Assignment title" },
+        "description": { "type": "string", "description": "Assignment description" },
+        "course": { "type": "string", "description": "Target course" },
+        "dueDate": { "type": "string", "format": "date-time", "description": "Submission deadline" },
+        "fileUrl": { "type": "string", "format": "uri", "description": "Link to assignment file" }
+      },
+      "required": ["title", "course", "dueDate"]
+    },
+    "Test": {
+      "title": "Live Test",
+      "description": "Upcoming live tests or mock tests.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Test title" },
+        "course": { "type": "string", "description": "Target course" },
+        "startTime": { "type": "string", "format": "date-time", "description": "Test start time" },
+        "duration": { "type": "string", "description": "Test duration (e.g., '2 hours')" },
+        "status": { "type": "string", "enum": ["Upcoming", "Live", "Completed"], "description": "Test status" }
+      },
+      "required": ["title", "course", "startTime"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles indexed by UID."
+    },
+    "/classes/{classId}": {
+      "schema": "Class",
+      "description": "Collection of upcoming classes."
+    },
+    "/homework/{homeworkId}": {
+      "schema": "Homework",
+      "description": "Collection of homework assignments."
+    },
+    "/tests/{testId}": {
+      "schema": "Test",
+      "description": "Collection of live tests."
+    }
+  }
+}

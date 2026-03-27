@@ -1,0 +1,124 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {uid}
+    // Fields:
+    //   - uid: string (required) - Firebase Auth UID
+    //   - name: string (required) - Full name
+    //   - email: string (required, email) - Email address
+    //   - role: string (required, enum: student, admin) - User role
+    //   - course: string (optional) - Selected course
+    //   - createdAt: timestamp (optional) - Creation time
+    //
+    // Collection: classes
+    // Document ID: {classId}
+    // Fields:
+    //   - title: string (required) - Class title
+    //   - description: string (optional) - Class description
+    //   - course: string (required) - Target course
+    //   - startTime: timestamp (required) - Class start time
+    //   - joinUrl: string (optional, uri) - Link to join
+    //   - type: string (optional, enum: Live Session, Recorded) - Session type
+    //
+    // Collection: homework
+    // Document ID: {homeworkId}
+    // Fields:
+    //   - title: string (required) - Assignment title
+    //   - description: string (optional) - Assignment description
+    //   - course: string (required) - Target course
+    //   - dueDate: timestamp (required) - Submission deadline
+    //   - fileUrl: string (optional, uri) - Link to assignment file
+    //
+    // Collection: tests
+    // Document ID: {testId}
+    // Fields:
+    //   - title: string (required) - Test title
+    //   - course: string (required) - Target course
+    //   - startTime: timestamp (required) - Test start time
+    //   - duration: string (optional) - Test duration
+    //   - status: string (optional, enum: Upcoming, Live, Completed) - Test status
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "vbyainnovations@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'role']) &&
+             data.uid is string && data.uid.size() > 0 &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.role in ['student', 'admin'] &&
+             (!('course' in data) || (data.course is string && data.course.size() < 100));
+    }
+
+    function isValidClass(data) {
+      return data.keys().hasAll(['title', 'course', 'startTime']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.course is string && data.course.size() > 0 &&
+             data.startTime is timestamp;
+    }
+
+    function isValidHomework(data) {
+      return data.keys().hasAll(['title', 'course', 'dueDate']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.course is string && data.course.size() > 0 &&
+             data.dueDate is timestamp;
+    }
+
+    function isValidTest(data) {
+      return data.keys().hasAll(['title', 'course', 'startTime']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.course is string && data.course.size() > 0 &&
+             data.startTime is timestamp;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isValidUser(request.resource.data) && 
+                    (isOwner(userId) && request.resource.data.role == 'student' || isAdmin());
+      allow update: if isAuthenticated() && isValidUser(request.resource.data) && 
+                    ((isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /classes/{classId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && (request.method == 'DELETE' || isValidClass(request.resource.data));
+    }
+
+    match /homework/{homeworkId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && (request.method == 'DELETE' || isValidHomework(request.resource.data));
+    }
+
+    match /tests/{testId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && (request.method == 'DELETE' || isValidTest(request.resource.data));
+    }
+  }
+}

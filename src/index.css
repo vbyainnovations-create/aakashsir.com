@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: #1e3a8a; /* Navy Blue from logo */
+  --secondary: #166534; /* Green from logo */
+  --accent: #2563eb;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --muted: #64748b;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --primary: #3b82f6;
+  --secondary: #22c55e;
+  --accent: #60a5fa;
+  --card: #0f172a;
+  --border: #1e293b;
+  --muted: #94a3b8;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.markdown-body h1 {
+  @apply text-4xl font-extrabold mb-8 text-slate-900 dark:text-slate-100 tracking-tight;
+}
+
+.markdown-body h2 {
+  @apply text-2xl font-bold mt-12 mb-6 text-[#1e3a8a] dark:text-blue-400 border-b-2 border-blue-100 dark:border-blue-900/30 pb-3;
+}
+
+.markdown-body h3 {
+  @apply text-xl font-bold mt-8 mb-4 text-slate-800 dark:text-slate-200;
+}
+
+.markdown-body p {
+  @apply mb-6 leading-relaxed text-slate-600 dark:text-slate-400 text-lg;
+}
+
+.markdown-body ul, .markdown-body ol {
+  @apply mb-6 ml-6 list-disc space-y-2;
+}
+
+.markdown-body ol {
+  @apply list-decimal;
+}
+
+.markdown-body li {
+  @apply text-slate-600 dark:text-slate-400;
+}
+
+.markdown-body code {
+  @apply bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-blue-800 dark:text-blue-300 font-mono text-sm;
+}
+
+.markdown-body pre {
+  @apply bg-slate-900 dark:bg-black text-slate-100 p-4 rounded-xl overflow-x-auto mb-6;
+}
+
+.markdown-body pre code {
+  @apply bg-transparent p-0 text-slate-100;
+}
+
+.markdown-body blockquote {
+  @apply border-l-4 border-blue-600 dark:border-blue-400 pl-6 italic my-8 text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-900/10 py-4 rounded-r-2xl shadow-sm;
+}
+
+/* Custom styling for specific blockquote types if the model uses them */
+.markdown-body blockquote p strong:first-child {
+  @apply block text-blue-700 dark:text-blue-300 not-italic uppercase tracking-wider text-xs font-black mb-2;
+}
+
+.markdown-body table {
+  @apply w-full mb-6 border-collapse;
+}
+
+.markdown-body th, .markdown-body td {
+  @apply border border-slate-200 dark:border-slate-800 p-3 text-left;
+}
+
+.markdown-body th {
+  @apply bg-slate-50 dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-300;
+}
+
+.markdown-body hr {
+  @apply my-8 border-slate-100 dark:border-slate-800;
+}
+
+.katex-display {
+  @apply my-6 overflow-x-auto overflow-y-hidden py-2;
+}
+
+.katex {
+  @apply text-blue-900 dark:text-blue-300;
+}
+
