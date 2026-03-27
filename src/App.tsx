@@ -360,7 +360,7 @@ function AppContent() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => window.open('https://aakashsir.com/enroll', '_blank')}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#1e3a8a] dark:bg-blue-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-900/20 hover:bg-blue-800 dark:hover:bg-blue-700 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#166534] dark:bg-green-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-green-900/20 hover:bg-green-800 dark:hover:bg-green-700 transition-all"
               >
                 <PenTool className="w-5 h-5" />
                 <span>Join as Student</span>
