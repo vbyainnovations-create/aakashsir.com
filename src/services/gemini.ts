@@ -1,7 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
-
+import { motionInPlaneTheory } from "../data/motion-in-plane";
 
 export async function getPhysicsContent(chapter: string, grade: string, type: string) {
+  if (chapter === 'Motion in a Plane' && type === 'theory') {
+    return motionInPlaneTheory;
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
   console.log("Fetching physics content for:", { chapter, grade, type });
   console.log("API Key type:", typeof apiKey);
