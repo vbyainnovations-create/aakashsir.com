@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { motionInPlaneTheory } from "../data/motion-in-plane";
 import { motionInPlaneDerivation } from "../data/motion-in-plane-derivation";
 import { motionStraightAssignment } from "../data/motion-straight-assignment";
+import { gravitationTheory } from "../data/gravitation";
 
 export async function getPhysicsContent(chapter: string, grade: string, type: string) {
   if (chapter === 'Motion in a Straight Line' && type === 'assignment') {
@@ -12,6 +13,9 @@ export async function getPhysicsContent(chapter: string, grade: string, type: st
   }
   if (chapter === 'Motion in a Plane' && type === 'derivation') {
     return motionInPlaneDerivation;
+  }
+  if (chapter === 'Gravitation' && type === 'theory') {
+    return gravitationTheory;
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
