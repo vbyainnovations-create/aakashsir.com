@@ -1,8 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 import { motionInPlaneTheory } from "../data/motion-in-plane";
 import { motionInPlaneDerivation } from "../data/motion-in-plane-derivation";
+import { motionStraightAssignment } from "../data/motion-straight-assignment";
 
 export async function getPhysicsContent(chapter: string, grade: string, type: string) {
+  if (chapter === 'Motion in a Straight Line' && type === 'assignment') {
+    return motionStraightAssignment;
+  }
   if (chapter === 'Motion in a Plane' && type === 'theory') {
     return motionInPlaneTheory;
   }
