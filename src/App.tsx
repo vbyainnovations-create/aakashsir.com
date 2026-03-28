@@ -894,6 +894,16 @@ function AppContent() {
                         if (!inline && match && match[1] === 'tikz') {
                           return <TikZ code={String(children).replace(/\n$/, '')} />;
                         }
+                        if (!inline && match && match[1] === 'pdf') {
+                          return (
+                            <iframe 
+                              src={String(children).trim()} 
+                              className="w-full min-h-[60vh] lg:min-h-[80vh] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm my-6" 
+                              allow="autoplay" 
+                              title="PDF Viewer"
+                            />
+                          );
+                        }
                         return (
                           <code className={className} {...props}>
                             {children}

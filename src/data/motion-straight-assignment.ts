@@ -3,9 +3,11 @@ export const motionStraightAssignment = `
 
 ---
 
-### Assignment PDF
+### Assignment Document
 
-[**👉 Click here to view and download the Assignment PDF 👈**](https://drive.google.com/file/d/1--rIzhG7xEFf4UJhAr8T_uOXHRlTL-XU/view)
+\`\`\`pdf
+https://drive.google.com/file/d/1--rIzhG7xEFf4UJhAr8T_uOXHRlTL-XU/preview
+\`\`\`
 
 ---
 *Please complete all questions before the next class.*
